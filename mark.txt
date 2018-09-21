@@ -1,0 +1,27 @@
+FPGA型号:LCMXO3L-6900C 6BG256C
+
+4Mb Serial Flash
+
+RGB LED BANK1
+5V电源 低电平点亮
+LED_RED - H15
+LED_GREEN - H14
+LED_BLUE - H16
+
+LEDS (1-4) BANK1
+3.3V电源 低电平点亮
+LED1 - K14
+LED2 - K15
+LED3 - L16
+LED4 - L14
+
+sysclk:
+J4 CLKIN0_HS_P T9 20MHz
+
+rst_n:
+M16 上拉
+
+
+
+
+

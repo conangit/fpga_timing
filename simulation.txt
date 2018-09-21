@@ -1,0 +1,4 @@
+三种仿真
+RTL
+Post-Map Gate-Level
+Post-Route Gate-Level+Timing
