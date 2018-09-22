@@ -32,6 +32,7 @@ module booth_multiplier_module_tb;
     );
     */
     
+    
     booth_multiplier_module_improve u2(
         .clk(clk),
         .rst_n(rst_n),
@@ -44,6 +45,7 @@ module booth_multiplier_module_tb;
         .SQ_s(SQ_s),
         .SQ_p(SQ_p)
     );
+    
     
     /*******************/
     
@@ -81,7 +83,7 @@ module booth_multiplier_module_tb;
                         B = 8'd4;
                     end
                 
-                1: // -4 * 4
+                1: // -4 * 5
                     if (done_sig) begin
                         start_sig <= 1'b0;
                         i <= i + 1'b1;
@@ -89,18 +91,18 @@ module booth_multiplier_module_tb;
                     else begin
                         start_sig <= 1'b1;
                         A = 8'b1111_1100;
-                        B = 8'd4;
+                        B = 8'd5;
                     end
                     
-                2: // 127 * -127
+                2: // 36 * -8
                     if (done_sig) begin
                         start_sig <= 1'b0;
                         i <= i + 1'b1;
                     end
                     else begin
                         start_sig <= 1'b1;
-                        A = 8'd127;
-                        B = 8'b1000_0001;
+                        A = 8'd36;
+                        B = 8'b1111_1000;
                     end
                 
                 3: // -127 * -127

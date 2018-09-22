@@ -1,6 +1,5 @@
 
 
-
 module booth_multiplier_module(
     input clk,
     input rst_n,
@@ -21,10 +20,10 @@ module booth_multiplier_module(
     
     reg [3:0]i;
     
-    reg [7:0]a; //result of A
-    reg [7:0]s; //reverse result of A
-    reg [16:0]p; //operation register P=2*8+1=17
-    reg [3:0]n; //用来指示n(8)次循环
+    reg [7:0]a;     //result of A
+    reg [7:0]s;     //reverse result of A
+    reg [16:0]p;    //operation register P=2*8+1=17
+    reg [3:0]n;     //用来指示n(8)次循环
     reg isDone;
     
     /*******************/
@@ -71,7 +70,7 @@ module booth_multiplier_module(
                     i <= 4'd1; //退回步骤1 继续循环
                 end
                 
-                3:
+                3: //求得计算结果
                 begin
                     isDone <= 1'b1;
                     i <= i + 1'b1;
