@@ -25,7 +25,7 @@ module divider_module_tb;
     // );
     
     
-    // divider_module_1 u2(
+    // divider_module_2 u2(
         // .clk(clk),
         // .rst_n(rst_n),
         // .start_sig(start_sig),
@@ -70,52 +70,8 @@ module divider_module_tb;
         else
         
             case (i)
-            
-                0: // 13 / 2
-                if (done_sig) begin
-                    start_sig <= 1'b0;
-                    i <= i + 1'b1;
-                end
-                else begin
-                    start_sig <= 1'b1;
-                    dividend <= 8'd13;
-                    divisor <= 8'd2;
-                end
-            
-                1: // 13 / -2
-                if (done_sig) begin
-                    start_sig <= 1'b0;
-                    i <= i + 1'b1;
-                end
-                else begin
-                    start_sig <= 1'b1;
-                    dividend <= 8'd13;
-                    divisor <= 8'b1111_1110;
-                end
-            
-                2: // -13 / 2
-                if (done_sig) begin
-                    start_sig <= 1'b0;
-                    i <= i + 1'b1;
-                end
-                else begin
-                    start_sig <= 1'b1;
-                    dividend <= 8'b1111_0011;
-                    divisor <= 8'd2;
-                end
-            
-                3: // -13 / -2
-                if (done_sig) begin
-                    start_sig <= 1'b0;
-                    i <= i + 1'b1;
-                end
-                else begin
-                    start_sig <= 1'b1;
-                    dividend <= 8'b1111_0011;
-                    divisor <= 8'b1111_1110;
-                end
                 
-                4: // 9 / 6
+                0: // 9 / 6
                 if (done_sig) begin
                     start_sig <= 1'b0;
                     i <= i + 1'b1;
@@ -126,7 +82,7 @@ module divider_module_tb;
                     divisor <= 8'd6;
                 end
                 
-                5: // 9 / -6
+                1: // 9 / -6
                 if (done_sig) begin
                     start_sig <= 1'b0;
                     i <= i + 1'b1;
@@ -137,7 +93,7 @@ module divider_module_tb;
                     divisor <= 8'b1111_1010;
                 end
                 
-                6: // -9 / 6
+                2: // -9 / 6
                 if (done_sig) begin
                     start_sig <= 1'b0;
                     i <= i + 1'b1;
@@ -148,7 +104,7 @@ module divider_module_tb;
                     divisor <= 8'd6;
                 end
                 
-                7: // -9 / -6
+                3: // -9 / -6
                 if (done_sig) begin
                     start_sig <= 1'b0;
                     i <= i + 1'b1;
@@ -159,8 +115,8 @@ module divider_module_tb;
                     divisor <= 8'b1111_1010;
                 end
                 
-                8:
-                    i <= 4'd8;
+                4:
+                    i <= 4'd4;
             
             endcase
         
