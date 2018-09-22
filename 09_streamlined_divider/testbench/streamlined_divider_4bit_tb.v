@@ -38,6 +38,7 @@ module streamlined_divider_4bit_tb;
     
     always @(posedge clk or negedge rst_n) begin
         if (!rst_n) begin
+            i <= 4'd0;
             start_sig <= 1'b0;
             dividend <= 4'd0;
             divisor <= 4'd0;
