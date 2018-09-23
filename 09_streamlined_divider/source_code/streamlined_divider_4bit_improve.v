@@ -1,6 +1,10 @@
+/////////////////////////////////////////////////////////////
+//还需改进点
+//1>确定商的正负
+//2>有别于传统除法 此除法得到的余数用为正 -- 同Python规则
+/////////////////////////////////////////////////////////////
 
-
-module streamlined_divider_4bit(
+module streamlined_divider_4bit_improve(
     clk,
     rst_n,
     start_sig,
@@ -27,12 +31,10 @@ module streamlined_divider_4bit(
     reg [7:0]temp;
     reg [7:0]diff;
     reg [4:0]s;
-    reg [3:0]n;
     
     /******************************/
     
     reg isDone;
-    reg isNeg;
     reg [3:0]q;
     reg [3:0]r;
     
@@ -42,74 +44,61 @@ module streamlined_divider_4bit(
     
     /******************************/
     
-    reg [3:0]i;
+    reg [2:0]i;
     
     always @(posedge clk or negedge rst_n) begin
         if (!rst_n) begin
+            i <= 3'd0;
+            isDone <= 1'b0;
+            q <= 4'd0;
+            r <= 4'd0;
             temp <= 8'd0;
             diff <= 8'd0;
             s <= 5'd0;
-            isDone <= 1'b0;
-            isNeg <= 1'b0;
-            q <= 4'd0;
-            r <= 4'd0;
-            i <= 4'd0;
-            n <= 4'd0;
         end
         else if (start_sig)
         
             case(i)
-                
-                0:
+            
+                0: //初始化
                 begin
-                    isNeg <= dividend[3]^divisor[3];
                     temp <= {4'd0, dividend};
+                    s <= divisor[3] ? {divisor[3], divisor} : {~divisor[3], (~divisor+1'b1)};
                     diff <= 8'd0;
-                    s <= divisor[3] ? {divisor[3], divisor} : {1'b1, (~divisor + 1'b1)};
                     q <= 4'd0;
                     r <= 4'd0;
                     i <= i + 1'b1;
                 end
-            
-                1:
-                if (n == 4) begin
-                    n <= 3'd0;
-                    i <= 4'd3;
-                end
-                else begin
-                    diff <= temp + {s, 3'b0};
-                    i <= i + 1'b1;
-                end
                 
-                2:
-                    begin
+                1, 2, 3, 4: //计算
+                begin
+                    diff = temp + {s, 3'b0}; //"="表示当前步骤取得结果 便于待会的diff[7]判断
+                    
                     if (diff[7])
                         temp <= {temp[6:0], 1'b0};
                     else
                         temp <= {diff[6:0], 1'b1};
                         
-                    i <= 4'd1;
-                    n <= n + 1'b1;
-                    
+                    i <= i + 1'b1;
                 end
                 
-                3:
+                5: //求得结果
                 begin
-                    q <= isNeg ? (~temp[3:0] + 1'b1) : temp[3:0];
+                    q <= temp[3:0];
                     r <= temp[7:4];
                     i <= i + 1'b1;
                 end
                 
-                4:
+                6:
                 begin
                     isDone <= 1'b1;
                     i <= i + 1'b1;
                 end
                 
-                5:
+                7:
                 begin
                     isDone <= 1'b0;
-                    i <= 4'd0;
+                    i <= 3'd0;
                 end
             
             endcase
