@@ -93,7 +93,10 @@ module theory_divider_8bit_tb;
                     
                 5:
                 begin
-                    #100; //clock=50delay
+                    // clock=50delay
+                    // #50; //will error
+                    // #75;
+                    #100; //至少的延时 否则结果出错
                     i <= go;
                 end
                 
