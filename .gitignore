@@ -8,6 +8,7 @@
 05_booth_multiplier/work
 
 08_divider/work
+
 09_streamlined_divider/work
 
 10_theory_divider/work
@@ -33,3 +34,7 @@
 19_fifo_multiplier/work
 
 20_mix_module/work
+20_mix_module_modify/work
+20_mix_module_ip/project
+
+
