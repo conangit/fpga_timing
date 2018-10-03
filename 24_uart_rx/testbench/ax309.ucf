@@ -1,0 +1,9 @@
+## CLK
+NET CLK LOC = T8 | TNM_NET = sys_clk_pin | IOSTANDARD = "LVCMOS33";
+TIMESPEC TS_sys_clk_pin = PERIOD sys_clk_pin 50000kHz;
+
+## RSTn
+NET RST_n LOC = L3 | IOSTANDARD = "LVCMOS33";
+
+#####################################################################
+
