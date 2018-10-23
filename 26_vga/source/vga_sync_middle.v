@@ -1,10 +1,20 @@
 
-
-
 //显示标准800X600@60Hz
 //VGA CLK 40MHz
 
-module vga_sync_module_alinx_before
+/*
+精确时序要求
+HSYNC  128      88       800     40      (1056)
+       3.2us    2.2us    20us    1us     26.4us
+
+VSYNC  4        23       600     1       (628)
+       105.6us  607.sus  15840us 26.4us  16579.2us
+*/
+
+
+//根据before的仿真,现在需要优化vsync与ready信号的时序
+
+module vga_sync_middle
 (
     clk,
     rst_n,
@@ -47,7 +57,9 @@ module vga_sync_module_alinx_before
             count_v <= 11'd0;
         else if(count_v == 11'd628)
             count_v <= 11'd0; //count_v=628过后的一个时钟count_v=0
-        else if(count_h == 11'd1056)
+        // else if(count_h == 11'd1056)
+        //优化<2>
+        else if(count_h == 11'd1055) //使得count_h=11'd1056时count_v也发生变化
             count_v <= count_v + 1'b1;
         else
             count_v <= count_v;
@@ -60,20 +72,25 @@ module vga_sync_module_alinx_before
     begin
         if(~rst_n)
             isReady <= 1'b0;
-        else if((count_h > 11'd216 && count_h < 11'd1017)
-                && (count_v > 11'd27 && count_v < 11'd627))
-            isReady <= 1'b1; //count_h=218,count_v=28 ~ count_h=1018,count_v=628 (?)
+        // else if((count_h > 11'd216 && count_h < 11'd1017) && (count_v > 11'd27 && count_v < 11'd627))
+        //优化<2>
+        else if((count_h >= 11'd216 && count_h < 11'd1016) && (count_v >= 11'd27 && count_v < 11'd627))
+            isReady <= 1'b1;
         else
             isReady <= 1'b0;
     end
     
     //注意此处为组合逻辑驱动
-    assign hsync_sig = (count_h <= 11'd128) ? 1'b0 : 1'b1; //count_h=129时刻,hsync_sig=1
-    assign vsnyc_sig = (count_v <= 11'd4) ? 1'b0 : 1'b1; //count_v=5时刻,vsnyc_sig=1 (理论上4个count_v(0~4)就够了:可以看出,多了一个count_v)
+    assign hsync_sig = (count_h <= 11'd128) ? 1'b0 : 1'b1;
+    
+    // assign vsnyc_sig = (count_v <= 11'd4) ? 1'b0 : 1'b1;
+    //优化<1>
+    assign vsnyc_sig = (count_v < 11'd4) ? 1'b0 : 1'b1;
+    
     assign ready = isReady;
     
-    assign column_addr_sig = isReady ? count_h - 11'd217 : 11'd0; //isReady=1时刻,column_addr_sig=1~800
-    assign row_addr_sig = isReady ? count_v - 11'd28 : 11'd0; //isReady=1时刻,row_addr_sig=0~598
+    assign column_addr_sig = isReady ? count_h - 11'd217 : 11'd0; //要求(期望)count from 0~799
+    assign row_addr_sig = isReady ? count_v - 11'd28 : 11'd0; //要求(期望)count from 0~599
     
     
 endmodule

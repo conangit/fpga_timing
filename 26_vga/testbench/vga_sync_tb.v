@@ -3,7 +3,7 @@
 //若延时单位为1ns 则40MHz为 #12.5 clk = ~clk;
 //存在小数
 
-module vga_sync_module_alinx_before_tb;
+module vga_sync_tb;
 
     reg clk;
     reg rst_n;
@@ -13,10 +13,22 @@ module vga_sync_module_alinx_before_tb;
     wire ready;
     wire [10:0] column_addr_sig;
     wire [10:0] row_addr_sig;
-
-
-
-    vga_sync_module_alinx_before u1
+    
+    /*
+    vga_sync_before u1
+    (
+        .clk(clk),
+        .rst_n(rst_n),
+        .hsync_sig(hsync_sig),
+        .vsnyc_sig(vsnyc_sig),
+        .ready(ready),
+        .column_addr_sig(column_addr_sig),
+        .row_addr_sig(row_addr_sig)
+    );
+    */
+    
+    
+    vga_sync_middle u2
     (
         .clk(clk),
         .rst_n(rst_n),
@@ -27,10 +39,12 @@ module vga_sync_module_alinx_before_tb;
         .row_addr_sig(row_addr_sig)
     );
     
+    
+    
     initial
     begin
         rst_n = 0;
-        #1000_000; //1us
+        #12500;         //12.5ns使得rst_n与clk同步
         rst_n = 1;
     end
     
