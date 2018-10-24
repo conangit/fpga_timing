@@ -17,7 +17,7 @@ VSYNC  4        23       600     1       (628)
 //复位释放后count_h从1到1056,count_h=1056后count_h=0,第二次的hsync则从0到1056
 //从而多了一个时钟
 
-module vga_sync_middle
+module vga_sync_last
 (
     clk,
     rst_n,
@@ -46,8 +46,6 @@ module vga_sync_middle
         if(~rst_n)
             count_h <= 11'd0;
         else if(count_h == 11'd1056)
-            // count_h <= 11'd1;
-            //优化<1>
             count_h <= 11'd1; //复位释放后第一个clk,count_h=1;此处使其仍从1开始计数--从而得到精确地hsync信号
         else
             count_h <= count_h + 1'b1;
@@ -62,8 +60,6 @@ module vga_sync_middle
             count_v <= 11'd0;
         else if(count_v == 11'd628)
             count_v <= 11'd0; //count_v=628过后的一个时钟count_v=0,这个没错,因为复位释放后count_v就为0
-        // else if(count_h == 11'd1056)
-        //优化<2>
         else if(count_h == 11'd1055) //使得count_h=11'd1056时count_v也发生变化--从而得到精确地vsync信号
             count_v <= count_v + 1'b1;
         else
@@ -77,9 +73,8 @@ module vga_sync_middle
     begin
         if(~rst_n)
             isReady <= 1'b0;
-        // else if((count_h > 11'd216 && count_h < 11'd1017) && (count_v > 11'd27 && count_v < 11'd627))
-        //优化<4>
-        else if((count_h >= 11'd216 && count_h < 11'd1016) && (count_v >= 11'd27 && count_v < 11'd627)) //这里count_v由count_h驱动,故首要先保证条件一满足,其目的是是指示x,y地址
+        else if((count_h >= 11'd216 && count_h < 11'd1016)      //这里count_v由count_h驱动,故首要先保证条件一满足(抓住216/1016是决定点)
+                && (count_v >= 11'd27 && count_v < 11'd627))    //isReady的本质目的是是指示x,y地址
             isReady <= 1'b1;
         else
             isReady <= 1'b0;
@@ -87,23 +82,12 @@ module vga_sync_middle
     
     //注意此处为组合逻辑驱动
     assign hsync_sig = (count_h <= 11'd128) ? 1'b0 : 1'b1;
-    
-    // assign vsnyc_sig = (count_v <= 11'd4) ? 1'b0 : 1'b1;
-    //优化<3>
     assign vsnyc_sig = (count_v < 11'd4) ? 1'b0 : 1'b1;
-    
     assign ready = isReady;
     
-    //通过波形观察,ready有效时,column_addr_sig从0~799满足
+    //在优化isReady后,再优化地址输出
     assign column_addr_sig = isReady ? count_h - 11'd217 : 11'd0; //要求(期望)count from 0~799
-    
-    //通过波形观察,ready有效时,row_addr_sig从11'd2047~598,故存在错误
-    // assign row_addr_sig = isReady ? count_v - 11'd28 : 11'd0; //要求(期望)count from 0~599
-    //优化<5>
     assign row_addr_sig = isReady ? count_v - 11'd27 : 11'd0; //要求(期望)count from 0~599
     
-    
-    
 endmodule
-
 
