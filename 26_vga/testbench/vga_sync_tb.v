@@ -40,7 +40,7 @@ module vga_sync_tb;
     );
     */
     
-    
+    /*
     vga_sync_last u3
     (
         .clk(clk),
@@ -51,7 +51,18 @@ module vga_sync_tb;
         .column_addr_sig(column_addr_sig),
         .row_addr_sig(row_addr_sig)
     );
+    */
     
+    vga_sync_last_2 u4
+    (
+        .clk(clk),
+        .rst_n(rst_n),
+        .hsync_sig(hsync_sig),
+        .vsnyc_sig(vsnyc_sig),
+        .ready(ready),
+        .column_addr_sig(column_addr_sig),
+        .row_addr_sig(row_addr_sig)
+    );
     
     initial
     begin
