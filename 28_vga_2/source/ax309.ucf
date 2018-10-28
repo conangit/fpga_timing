@@ -1,0 +1,40 @@
+##
+NET clk LOC = T8 | TNM_NET = sys_clk_pin | IOSTANDARD = "LVCMOS33";
+TIMESPEC TS_sys_clk_pin = PERIOD sys_clk_pin 50000kHz;
+##
+
+NET rst_n LOC = L3 | IOSTANDARD = "LVCMOS33";
+
+##########################################################################
+##########################################################################
+
+
+##########################################################################
+## VGA RGB[5:6:5]
+
+NET red<4>              LOC = M13 | IOSTANDARD = "LVCMOS33";        ## VGA R4
+NET red<3>              LOC = N14 | IOSTANDARD = "LVCMOS33";        ## VGA R3
+NET red<2>              LOC = L12 | IOSTANDARD = "LVCMOS33";        ## VGA R2
+NET red<1>              LOC = M12 | IOSTANDARD = "LVCMOS33";        ## VGA R1
+NET red<0>              LOC = M11 | IOSTANDARD = "LVCMOS33";        ## VGA R0
+
+NET green<5>            LOC = P11 | IOSTANDARD = "LVCMOS33";        ## VGA G4
+NET green<4>            LOC = M10 | IOSTANDARD = "LVCMOS33";        ## VGA G4
+NET green<3>            LOC = L10 | IOSTANDARD = "LVCMOS33";        ## VGA G3
+NET green<2>            LOC = P9  | IOSTANDARD = "LVCMOS33";        ## VGA G2
+NET green<1>            LOC = N9  | IOSTANDARD = "LVCMOS33";        ## VGA G1
+NET green<0>            LOC = M9  | IOSTANDARD = "LVCMOS33";        ## VGA G0
+
+NET blue<4>             LOC = L7  | IOSTANDARD = "LVCMOS33";        ## VGA B4
+NET blue<3>             LOC = N8  | IOSTANDARD = "LVCMOS33";        ## VGA B3
+NET blue<2>             LOC = P8  | IOSTANDARD = "LVCMOS33";        ## VGA B2
+NET blue<1>             LOC = M7  | IOSTANDARD = "LVCMOS33";        ## VGA B1
+NET blue<0>             LOC = P7  | IOSTANDARD = "LVCMOS33";        ## VGA B0
+
+NET hsync_sig               LOC = M14 | IOSTANDARD = "LVCMOS33";        ## VGA HS
+NET vsnyc_sig               LOC = L13 | IOSTANDARD = "LVCMOS33";        ## VGA VS
+
+
+##########################################################################
+
+
